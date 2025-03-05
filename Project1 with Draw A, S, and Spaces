@@ -50,6 +50,22 @@ drawA(TextWidth, TextHeight, FontSize, CurrentLine, ColumnNumber) :-
   NextColumn is ColumnNumber + FontSize,
   drawA(TextWidth, TextHeight, FontSize, CurrentLine, NextColumn).
 
+/* draw Spaces*/
+/*-------------------------------------------------------------------------------------------------*/
+
+drawSpaces(ColumnNumber, SpaceBetweenCharacters) :-
+ColumnNumber > SpaceBetweenCharacters.
+
+drawSpaces(ColumnNumber, SpaceBetweenCharacters) :-
+write(' '),
+NextColumn is ColumnNumber + 1,
+drawSpaces(NextColumn, SpaceBetweenCharacters).
+
+/* draw Spaces*/
+/*-------------------------------------------------------------------------------------------------*/
+
+
+
 /*-------------------------------------------------------------------------------------------------*/
 /* draw S */
 drawS(TextWidth, TextHeight, FontSize, CurrentLine, ColumnNumber) :-
@@ -121,6 +137,7 @@ draw(LeftRightMargin, SpaceBetweenCharacters, FontSize, CurrentLine, TextWidth, 
 
 
   /** this section should hold code for s & u; i included the outline from the TA for these sections **/
+  drawSpaces(0, SpaceBetweenCharacters),
   ColumnNumber is 0,
   drawS(TextWidth, TextHeight, FontSize, CurrentLine, ColumnNumber),
   % add spaces here between S and U
