@@ -140,8 +140,8 @@ draw(LeftRightMargin, SpaceBetweenCharacters, FontSize, CurrentLine, TextWidth, 
   drawSpaces(0, SpaceBetweenCharacters),
   ColumnNumber is 0,
   drawS(TextWidth, TextHeight, FontSize, CurrentLine, ColumnNumber),
-  % add spaces here between S and U
-  %ColumnNumber is 0,
+  drawSpaces(0, SpaceBetweenCharacters),
+  ColumnNumber is 0,
   % drawU
   /*---------------------------------------------*/
 
