@@ -54,7 +54,7 @@ drawA(TextWidth, TextHeight, FontSize, CurrentLine, ColumnNumber) :-
 /*-------------------------------------------------------------------------------------------------*/
 
 drawSpaces(ColumnNumber, SpaceBetweenCharacters) :-
-ColumnNumber > SpaceBetweenCharacters.
+ColumnNumber >= SpaceBetweenCharacters.
 
 drawSpaces(ColumnNumber, SpaceBetweenCharacters) :-
 write(' '),
@@ -124,6 +124,53 @@ drawS(TextWidth, TextHeight, FontSize, CurrentLine, ColumnNumber) :-
 	NextColumn is ColumnNumber + FontSize,
 	drawS(TextWidth, TextHeight, FontSize, CurrentLine, NextColumn).
 /* draw S */
+/*-------------------------------------------------------------------------------------------------*/
+
+
+/* draw U */
+drawU(TextWidth, TextHeight, FontSize, CurrentLine, ColumnNumber) :-
+    ColumnNumber >= TextWidth.
+
+drawU(TextWidth, TextHeight, FontSize, CurrentLine, ColumnNumber) :-
+    (CurrentLine >= 0, CurrentLine < TextHeight - FontSize),
+    (ColumnNumber >= 0, ColumnNumber < FontSize; ColumnNumber >= FontSize * 2, ColumnNumber < TextWidth),
+    drawSymbol('*', FontSize),
+    NextColumn is ColumnNumber + FontSize,
+    drawU(TextWidth, TextHeight, FontSize, CurrentLine, NextColumn).
+
+drawU(TextWidth, TextHeight, FontSize, CurrentLine, ColumnNumber) :-
+    (CurrentLine >= 0, CurrentLine < TextHeight - FontSize),
+    (ColumnNumber >= FontSize, ColumnNumber < FontSize * 2),
+    drawSymbol(' ', FontSize),
+    NextColumn is ColumnNumber + FontSize,
+    drawU(TextWidth, TextHeight, FontSize, CurrentLine, NextColumn).
+
+drawU(TextWidth, TextHeight, FontSize, CurrentLine, ColumnNumber) :-
+    (CurrentLine >= TextHeight - FontSize, CurrentLine < TextHeight),
+    drawSymbol('*', FontSize),
+    NextColumn is ColumnNumber + FontSize,
+    drawU(TextWidth, TextHeight, FontSize, CurrentLine, NextColumn).
+
+/* Update the draw predicate to include U */
+draw(LeftRightMargin, SpaceBetweenCharacters, FontSize, CurrentLine, TextWidth, TextHeight) :-
+    CurrentLine >= TextHeight.
+
+draw(LeftRightMargin, SpaceBetweenCharacters, FontSize, CurrentLine, TextWidth, TextHeight) :-
+    CurrentLine < TextHeight,
+    write('|'), drawSymbol(' ', LeftRightMargin),
+    ColumnNumber is 0,
+    drawA(TextWidth, TextHeight, FontSize, CurrentLine, ColumnNumber),
+    drawSpaces(0, SpaceBetweenCharacters),
+    ColumnNumber is 0,
+    drawS(TextWidth, TextHeight, FontSize, CurrentLine, ColumnNumber),
+    drawSpaces(0, SpaceBetweenCharacters),
+    ColumnNumber is 0,
+    drawU(TextWidth, TextHeight, FontSize, CurrentLine, ColumnNumber),
+    drawSymbol(' ', LeftRightMargin),
+    write('|'),
+    nl,
+    NextLine is CurrentLine + 1,
+    draw(LeftRightMargin, SpaceBetweenCharacters, FontSize, NextLine, TextWidth, TextHeight).
 /*-------------------------------------------------------------------------------------------------*/
 
 
