@@ -1,4 +1,6 @@
-prologRecitation - P1 ASU
+prologRecitation - P2 Chess
 
 Group Members: 
-Autumn McCombs, George Couvall, Jackson Loops
+Autumn McCombs - Task 3
+George Couvall - Task 2 
+Jackson Loops - Task 1
