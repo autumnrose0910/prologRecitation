@@ -1,0 +1,125 @@
+/*-------------------------------------------------------------------------------------------------*/
+/* Basic People */
+
+	person(me).
+	person(widow).
+	person(daughter).
+	person(dad).
+
+/* Basic People */
+/*-------------------------------------------------------------------------------------------------*/
+
+/*-------------------------------------------------------------------------------------------------*/
+/* Marriages */
+
+	married(me, widow).
+	married(dad, daughter).
+
+/* Marriages */
+/*-------------------------------------------------------------------------------------------------*/
+
+/*-------------------------------------------------------------------------------------------------*/
+/* Parent relationships */
+
+	mother(daughter, widow).
+	father(baby, me).
+	mother(baby, daughter).
+	father(dads_son, dad).
+	mother(dads_son, daughter).
+
+/* Parent relationships */
+/*-------------------------------------------------------------------------------------------------*/
+
+/*-------------------------------------------------------------------------------------------------*/
+/* Genders */
+
+	male(me).
+	male(dad).
+	male(baby).
+	male(dads_son). 
+
+	female(widow).
+	female(daughter).
+
+/* Genders */
+/*-------------------------------------------------------------------------------------------------*/
+
+/*-------------------------------------------------------------------------------------------------*/
+/* Rules */
+
+% parent(Child, Parent)
+
+	parent(Child, Parent) :- mother(Child, Parent).
+	parent(Child, Parent) :- father(Child, Parent).
+
+% child(Child, Parent)
+
+	child(Child, Parent) :- parent(Child, Parent).
+
+% husband(Husband, Wife)
+
+	husband(Husband, Wife) :- married(Husband, Wife).
+
+% wife(Wife, Husband)
+
+	wife(Wife, Husband) :- married(Husband, Wife).
+
+% son_in_law(SonInLaw, Person)
+
+	son_in_law(SonInLaw, Person) :-
+    		married(SonInLaw, Child),
+    			parent(Child, Person).
+
+% stepmother(StepMother, StepChild)
+
+	stepmother(StepMother, StepChild) :-
+    		married(StepMother, Parent),
+    			parent(StepChild, Parent).
+
+% grandmother(Grandmother, Grandchild)
+
+	grandmother(Grandmother, Grandchild) :-
+    		parent(Parent, Grandchild),
+    			mother(Parent, Grandmother).
+
+% grandfather(Grandfather, Grandchild)
+
+	grandfather(Grandfather, Grandchild) :-
+   	 	parent(Parent, Grandchild),
+    			father(Parent, Grandfather).
+
+% grandchild(Grandchild, Grandparent)
+
+	grandchild(Grandchild, Grandparent) :-
+    		parent(Parent, Grandchild),
+    			parent(Parent, Grandparent).
+
+% uncle(Uncle, Person)
+
+	uncle(Uncle, Person) :-
+   	 	parent(Parent, Person),
+    		parent(Uncle, Parent),
+   	 	male(Uncle),
+    	Uncle \= Parent.
+
+% I am my own grandpa if I am my own grandfather
+
+my_own_grandpa(X) :-
+    grandfather(X, X).
+
+/* Rules */
+/*-------------------------------------------------------------------------------------------------*/
+
+print_check(Question, true) :-
+    write(Question), write(': true.'), nl.
+print_check(Question, false) :-
+    write(Question), write(': false.'), nl.
+
+
+runIt :-
+    % Final check if I am my own grandpa
+    ( my_own_grandpa(me) ->
+        print_check('Is me my own grandpa', true)
+    ;
+        print_check('Is me my own grandpa', false)
+    ).
